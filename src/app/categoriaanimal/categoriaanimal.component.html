@@ -1,0 +1,93 @@
+
+<div class="row" *ngIf="agregarCA == false">
+  
+  <div class="col s1 offset-s4" >      
+      <a class="btn-floating btn-large waves-effect waves-light blue darken-3" (click)="addNewCA()" >
+      <i class="material-icons">add</i>
+      </a>
+  </div>
+  <div class="col s3 " >
+      <h6 class="blue-text text-darken-2"> Agregar nueva Categoria  de animal </h6>      
+  </div>
+   <div class="col s12">
+    <h6 class="blue-text text-darken-2"> Listado de categorías de animales </h6>      
+    <label class="red lighten-3" *ngIf="fueBorrada == 'true'"> <h4>Categoría eliminada</h4>  </label>      
+
+    <table class="striped">
+      <thead>
+        <td>Nombre de la Categoría </td>
+        <td>Descripción</td>
+        <td>Código</td>
+        <td>Estado</td>
+        <td>Acciones</td>
+      </thead>
+      <tr *ngFor="let categoria of categoriasAnimales" class="hoverable">
+        <td>{{categoria.nombrecategoriaanimal}}</td>
+        <td>{{categoria.descripcioncategoriaanimal}}</td>
+        <td>{{categoria.codigocategoriaanimal}}</td>
+        <td>
+          <span class="red" *ngIf="categoria.categoriaanimalactivo == false ">Inactivo</span>
+          <span class="green" *ngIf="categoria.categoriaanimalactivo == true ">Activo</span>
+          
+        </td>
+        <td>
+          <a (click)="editCA(categoria);" title="Editar">
+              <i class="material-icons">edit</i>
+          </a>
+          <a (click)="borrarCategotiaAnimal(categoria);" >
+            <i class="material-icons" title="Eliminar">delete</i>
+          </a>  
+          
+          
+        </td>
+    
+      </tr>
+    </table>
+  </div>
+</div>
+<!-- Formulario para agregar o editar  -->
+
+<div class="row" *ngIf="agregarCA == true  ">
+    
+    
+  <form class="col s12" #categoriaAnimalNewForm="ngForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" value="{{categoria.idpkcategoriaanimal}}">
+    <div class="row">
+      <h5 class="col s8 offset-s2 center-align"> {{tituloPrincipal}}</h5>
+      <h5 class="col s8 offset-s2 center-align success"  *ngIf="stActualizar == 'true' " > Categoría Actualizada </h5>
+      <h5 class="col s8 offset-s2 center-align danger"  *ngIf="stActualizar == 'false' " > Categoría  no Actualizada </h5>
+      <div class="input-field col s4">
+        <input id="codigotipoanimal" [ngModelOptions]="{standalone: true}" #codigo="ngModel" [(ngModel)]="categoria.codigocategoriaanimal" type="text"
+          class="validate" required>
+        <label for="codigotipoanimal">Código de la Categoría  delanimal</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="nombretipoanimal" type="text" class="validate" [ngModelOptions]="{standalone: true}" #nombre="ngModel"
+          [(ngModel)]="categoria.nombrecategoriaanimal" required>
+        <label for="nombretipoanimal">Nombre de la categoria de animal</label>
+      </div>
+      <div class="input-field col s4">
+        <label>
+          <input type="checkbox" checked="checked" #estate="ngModel" [(ngModel)]="categoria.categoriaanimalactivo" [ngModelOptions]="{standalone: true}" />
+          <span>El categoria de animal está activa ?</span>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea name="descripcion" id="descripcion" cols="30" rows="10" class="validate" #description="ngModel"
+          [(ngModel)]="categoria.descripcioncategoriaanimal"></textarea>
+        <label for="descripcion">Descripcion de la categoría del animal</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4 offset-s2">
+        <input type="submit" class=" btn-large waves-effect waves-light blue darken-3 " value="{{tituloBotonSubmit}}"  [disabled]="!categoriaAnimalNewForm.form.valid">
+      </div>
+      <div class="col s4">
+        <a (click)="restartValues();" class="waves-effect waves-light btn-large red darken-1" value="Cancelar"> Cancelar</a>
+      </div>
+    </div>
+  </form>
+  </div>
